@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Amal Suresh | Digital Artist</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Limelight&family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Limelight&family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-base: #05070a; 
@@ -17,7 +17,7 @@
             --border: rgba(255, 255, 255, 0.08); 
         }
 
-        /* cursor: none is essential for the custom brush to work */
+        /* Essential: cursor: none for the custom brush */
         * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); cursor: none; }
         
         body {
@@ -28,7 +28,7 @@
             scroll-behavior: smooth;
         }
 
-        /* --- CUSTOM PAINT BRUSH CURSOR --- */
+        /* --- MOUSE GLOW & BRUSH --- */
         #cursor-brush {
             position: fixed; top: 0; left: 0; font-size: 24px; color: var(--accent-primary);
             pointer-events: none; z-index: 10001; transform: translate(-10%, -10%) rotate(-15deg);
@@ -86,21 +86,29 @@
         .filter-btn.active, .filter-btn:hover { border-color: var(--accent-primary); color: var(--accent-primary); }
 
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
-        .art-card { background-color: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; position: relative; }
-        .art-card img { width: 100%; height: 450px; object-fit: cover; opacity: 0.7; filter: saturate(0.5); }
+        .art-card { background-color: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; position: relative; min-height: 450px; display: flex; align-items: center; justify-content: center;}
+        
+        .art-card img { 
+            width: 100%; 
+            height: 450px; 
+            object-fit: contain; /* Changed to contain so image is NOT cropped */
+            opacity: 0.8; 
+            transition: 0.5s;
+        }
+        
         .art-card:hover { transform: translateY(-10px); border-color: var(--accent-primary); box-shadow: 0 0 40px var(--accent-glow); }
-        .art-card:hover img { opacity: 1; filter: saturate(1); transform: scale(1.05); }
+        .art-card:hover img { opacity: 1; transform: scale(1.02); }
 
         .card-overlay {
-            position: absolute; bottom: 0; left: 0; width: 100%; padding: 30px;
+            position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px;
             background: linear-gradient(transparent, rgba(5, 7, 10, 0.95));
-            opacity: 0; transition: 0.4s;
+            opacity: 0; transition: 0.4s; pointer-events: none;
         }
         .art-card:hover .card-overlay { opacity: 1; }
-        .card-overlay h3 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 22px; }
+        .card-overlay h3 { font-size: 18px; color: #fff; text-align: center;}
 
         footer { text-align: center; padding: 6rem 0; border-top: 1px solid var(--border); margin-top: 6rem; }
-        .contact-link { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 4vw, 2.5rem); color: #fff; text-decoration: none; font-style: italic; border-bottom: 2px solid var(--accent-primary); }
+        .contact-link { font-size: clamp(1.2rem, 3vw, 2rem); color: #fff; text-decoration: none; border-bottom: 2px solid var(--accent-primary); padding-bottom: 5px; }
 
         @media (max-width: 768px) { * { cursor: auto; } #cursor-glow, #cursor-brush { display: none; } }
     </style>
@@ -145,24 +153,24 @@
                 </div>
 
                 <div class="gallery-grid">
-                    <div class="art-card bg"><img src="art1.jpg" alt="BG"></div>
+                    <div class="art-card bg"><img src="art1.jpg" alt="BG Art"></div>
                     
-                    <div class="art-card character"><img src="art2.jpg" alt="Char"></div>
+                    <div class="art-card character"><img src="art2.jpg" alt="Char Art"></div>
 
                     <div class="art-card icons">
-                        <img src="icon1.png" alt="Main Icon Set">
+                        <img src="icon1.png" alt="Icon Set">
                         <div class="card-overlay"><h3>Core Icons</h3></div>
                     </div>
                     <div class="art-card icons">
-                        <img src="page1.png" alt="Icon Page 1">
-                        <div class="card-overlay"><h3>Icon Design - Page 1</h3></div>
+                        <img src="page1.png" alt="Page 1">
+                        <div class="card-overlay"><h3>Icon Page 1</h3></div>
                     </div>
                     <div class="art-card icons">
-                        <img src="page2.png" alt="Icon Page 2">
-                        <div class="card-overlay"><h3>Icon Design - Page 2</h3></div>
+                        <img src="page2.png" alt="Page 2">
+                        <div class="card-overlay"><h3>Icon Page 2</h3></div>
                     </div>
 
-                    <div class="art-card sketches"><img src="art3.jpg" alt="Sketch"></div>
+                    <div class="art-card sketches"><img src="art3.jpg" alt="Sketch Art"></div>
                 </div>
             </section>
         </main>
@@ -185,7 +193,7 @@
             if (c == "all") c = "";
             for (let i = 0; i < x.length; i++) {
                 x[i].style.display = "none";
-                if (x[i].className.indexOf(c) > -1) x[i].style.display = "block";
+                if (x[i].className.indexOf(c) > -1) x[i].style.display = "flex";
             }
             const btns = document.getElementsByClassName("filter-btn");
             for (let i = 0; i < btns.length; i++) { btns[i].classList.remove("active"); }
