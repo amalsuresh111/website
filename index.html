@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,7 +49,7 @@
             font-size: 28px; 
             color: var(--accent-primary);
             pointer-events: none;
-            z-index: 10001;
+            z-index: 100001; /* Extremely high to stay above modal */
             transform-origin: bottom left;
             transform: translate(0, -100%) rotate(10deg); 
             text-shadow: 0 0 15px var(--accent-glow);
@@ -117,15 +116,78 @@
 
         /* --- Gallery Section --- */
         .filter-controls { display: flex; justify-content: center; gap: 15px; margin: 2rem 0 4rem; flex-wrap: wrap; }
-        .filter-btn { background: transparent; border: 1px solid var(--border); color: var(--text-dim); padding: 10px 25px; cursor: none !important; border-radius: 30px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .filter-btn { background: transparent; border: 1px solid var(--border); color: var(--text-dim); padding: 10px 25px; border-radius: 30px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
         .filter-btn.active, .filter-btn:hover { border-color: var(--accent-primary); color: var(--accent-primary); box-shadow: 0 0 15px var(--accent-glow); }
 
-        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
-        .art-card { background-color: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; position: relative; }
-        .art-card img { width: 100%; height: 450px; object-fit: cover; opacity: 0.7; filter: saturate(0.5); }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; align-items: start; }
+        
+        .art-card { 
+            background-color: var(--surface); 
+            border: 1px solid var(--border); 
+            border-radius: 6px; 
+            overflow: hidden; 
+            position: relative; 
+            display: block; 
+        }
+        
+        .art-card img { 
+            width: 100%; 
+            height: auto; 
+            display: block;
+            opacity: 0.85; 
+            transition: 0.5s;
+        }
         
         .art-card:hover { transform: translateY(-10px); border-color: var(--accent-primary); box-shadow: 0 0 40px var(--accent-glow); }
-        .art-card:hover img { opacity: 1; filter: saturate(1); transform: scale(1.05); }
+        .art-card:hover img { opacity: 1; filter: saturate(1); transform: scale(1.02); }
+
+        /* --- LIGHTBOX MODAL --- */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 99999; 
+            padding-top: 50px; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(5, 7, 10, 0.95); 
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 8px;
+            border: 2px solid var(--accent-primary);
+            box-shadow: 0 0 40px var(--accent-glow);
+            animation: zoomIn 0.3s ease;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 25px;
+            right: 40px;
+            color: var(--text-dim);
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .close-modal:hover,
+        .close-modal:focus {
+            color: var(--accent-primary);
+            text-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        @keyframes zoomIn {
+            from {transform: scale(0.9); opacity: 0;} 
+            to {transform: scale(1); opacity: 1;}
+        }
 
         footer { text-align: center; padding: 6rem 0; border-top: 1px solid var(--border); margin-top: 6rem; }
         .contact-links { display: flex; flex-direction: column; gap: 10px; align-items: center; }
@@ -135,6 +197,7 @@
         @media (max-width: 768px) { 
             * { cursor: auto !important; }
             #cursor-glow, #cursor-brush { display: none; }
+            .modal-content { max-width: 95%; max-height: 70vh; }
         }
     </style>
 </head>
@@ -142,6 +205,11 @@
 
     <div id="cursor-glow"></div>
     <i class="fa-solid fa-paint-brush" id="cursor-brush"></i>
+
+    <div id="imageModal" class="modal">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="img01">
+    </div>
 
     <div class="container">
         <header class="nav-header">
@@ -167,14 +235,8 @@
                     <div class="about-text">
                         <h2>About Me</h2>
                         <div class="about-description">
-                            <p>I am an ardent and visionary artist and creative thinker who always works to the highest standards, delivering top-level professionalism and dedication.</p>
-                            <p>Started my career 5 years ago as a junior 2D gaming concept artist, I have extensive experience working on team projects under tight deadlines for global industry leaders.</p>
-                        </div>
-                        <div class="experience-box">
-                            <div class="experience-item">
-                                <h4>Experience Highlights</h4>
-                                <p>Successfully collaborated with top gaming companies including GSN, Zynga, and Stellarplay.</p>
-                            </div>
+                            <p>I am an ardent and visionary artist. As a creative thinker I always work to the highest standards; delivering the highest level of professionalism and dedication to long-term, strategic improvements of my skillset.</p>
+                            <p>I started my career as a junior 2D gaming concept artist, 5 yrs ago I've been working on team projects under tight deadlines. Worked with top gaming companies like GSN, ZYNGA, STELLARPLAY etc.</p>
                         </div>
                     </div>
                 </div>
@@ -183,8 +245,8 @@
             <section class="arsenal-section">
                 <h2 style="font-size: 12px; text-transform: uppercase; letter-spacing: 4px; color: var(--accent-primary);">Technical Arsenal</h2>
                 <div class="tool-grid">
-                    <div class="tool-card"><img src="pngwing.com(1).png" alt="Photoshop"><span>Photoshop</span></div>
-                    <div class="tool-card"><img src="pngwing.com.png" alt="Illustrator"><span>Illustrator</span></div>
+                    <div class="tool-card"><img src="photosho.png" alt="Photoshop"><span>Photoshop</span></div>
+                    <div class="tool-card"><img src="illustrator.png" alt="Illustrator"><span>Illustrator</span></div>
                     <div class="tool-card"><i class="fa-solid fa-palette" style="font-size: 40px; color: var(--accent-primary); margin-bottom: 15px; display: block;"></i><span>Digital Painting</span></div>
                 </div>
             </section>
@@ -195,14 +257,43 @@
                     <button class="filter-btn" onclick="filterSelection('bg')">Backgrounds</button>
                     <button class="filter-btn" onclick="filterSelection('character')">Characters</button>
                     <button class="filter-btn" onclick="filterSelection('icons')">Icons</button>
-                    <button class="filter-btn" onclick="filterSelection('sketches')">Sketches</button>
                 </div>
 
                 <div class="gallery-grid">
-                    <div class="art-card bg"><img src="art1.jpg" alt="Background"></div>
-                    <div class="art-card character"><img src="art2.jpg" alt="Character"></div>
-                    <div class="art-card icons"><img src="art3.jpg" alt="Icon"></div>
-                    <div class="art-card sketches"><img src="art4.jpg" alt="Sketch"></div>
+                    
+                    <div class="art-card bg">
+                        <img src="art1.jpg" alt="Background Art">
+                    </div>
+
+                    <div class="art-card icons">
+                        <img src="icon1.png" alt="Icon Set 1">
+                    </div>
+                    <div class="art-card icons">
+                        <img src="page2.png" alt="Icon Set 2">
+                    </div>
+                    <div class="art-card icons">
+                        <img src="page3.png" alt="Icon Set 3">
+                    </div>
+                    <div class="art-card icons">
+                        <img src="page4.png" alt="Icon Set 4">
+                    </div>
+                    <div class="art-card icons">
+                        <img src="page5.png" alt="Icon Set 5">
+                    </div>
+
+                    <div class="art-card character">
+                        <img src="char1.png" alt="Character Concept 1">
+                    </div>
+                    <div class="art-card character">
+                        <img src="char2.png" alt="Character Concept 2">
+                    </div>
+                    <div class="art-card character">
+                        <img src="char3.png" alt="Character Concept 3">
+                    </div>
+                    <div class="art-card character">
+                        <img src="char4.jpg" alt="Character Concept 4">
+                    </div>
+
                 </div>
             </section>
         </main>
@@ -218,6 +309,7 @@
     </div>
 
     <script>
+        // --- CUSTOM CURSOR SCRIPT ---
         const glow = document.getElementById('cursor-glow');
         const brush = document.getElementById('cursor-brush');
 
@@ -230,6 +322,7 @@
             });
         });
 
+        // --- FILTER SCRIPT ---
         function filterSelection(c) {
             const x = document.getElementsByClassName("art-card");
             if (c == "all") c = "";
@@ -240,6 +333,33 @@
             const btns = document.getElementsByClassName("filter-btn");
             for (let i = 0; i < btns.length; i++) { btns[i].classList.remove("active"); }
             event.currentTarget.classList.add("active");
+        }
+
+        // --- LIGHTBOX MODAL SCRIPT ---
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("img01");
+        const artCards = document.querySelectorAll(".art-card");
+        const span = document.getElementsByClassName("close-modal")[0];
+
+        // Open modal on click
+        artCards.forEach(card => {
+            card.addEventListener("click", function() {
+                const img = this.querySelector("img");
+                modal.style.display = "block";
+                modalImg.src = img.src;
+            });
+        });
+
+        // Close modal when clicking the 'X'
+        span.onclick = function() { 
+            modal.style.display = "none";
+        }
+
+        // Close modal when clicking outside the image
+        modal.onclick = function(e) {
+            if (e.target === modal) {
+                modal.style.display = "none";
+            }
         }
     </script>
 </body>
