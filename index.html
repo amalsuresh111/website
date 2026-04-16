@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,7 +50,7 @@
             font-size: 28px; 
             color: var(--accent-primary);
             pointer-events: none;
-            z-index: 100001; /* Extremely high to stay above modal */
+            z-index: 100001; 
             transform-origin: bottom left;
             transform: translate(0, -100%) rotate(10deg); 
             text-shadow: 0 0 15px var(--accent-glow);
@@ -219,7 +220,7 @@
                 <a href="https://www.artstation.com/amalcs" target="_blank"><i class="fa-brands fa-artstation"></i> ArtStation</a>
                 <a href="mailto:amalsuresh734@gmail.com">Email</a>
                 <a href="tel:+917025846680">Call</a>
-                <a href="resume.pdf" download class="resume-btn"><i class="fa-solid fa-download"></i> Resume</a>
+                <a href="Resume.pdf" download class="resume-btn"><i class="fa-solid fa-download"></i> Resume</a>
             </nav>
         </header>
 
@@ -236,7 +237,7 @@
                         <h2>About Me</h2>
                         <div class="about-description">
                             <p>I am an ardent and visionary artist. As a creative thinker I always work to the highest standards; delivering the highest level of professionalism and dedication to long-term, strategic improvements of my skillset.</p>
-                            <p>I started my career as a junior 2D gaming concept artist, 5 yrs ago I've been working on team projects under tight deadlines. Worked with top gaming companies like GSN, ZYNGA, STELLARPLAY etc.</p>
+                            <p>I started my career as a junior 2D gaming concept artist, 7 yrs ago I've been working on team projects under tight deadlines. Worked with top gaming companies like GSN, ZYNGA, STELLARPLAY etc.</p>
                         </div>
                     </div>
                 </div>
@@ -253,18 +254,13 @@
 
             <section id="work">
                 <div class="filter-controls">
-                    <button class="filter-btn active" onclick="filterSelection('all')">All Work</button>
+                    <button class="filter-btn active" onclick="filterSelection('icons')">Icons</button>
                     <button class="filter-btn" onclick="filterSelection('bg')">Backgrounds</button>
                     <button class="filter-btn" onclick="filterSelection('character')">Characters</button>
-                    <button class="filter-btn" onclick="filterSelection('icons')">Icons</button>
                 </div>
 
                 <div class="gallery-grid">
                     
-                    <div class="art-card bg">
-                        <img src="art1.jpg" alt="Background Art">
-                    </div>
-
                     <div class="art-card icons">
                         <img src="icon1.png" alt="Icon Set 1">
                     </div>
@@ -281,8 +277,33 @@
                         <img src="page5.png" alt="Icon Set 5">
                     </div>
 
+                    <div class="art-card bg">
+                        <img src="BG1.jpg" alt="Background Concept 1">
+                    </div>
+                    <div class="art-card bg">
+                        <img src="BG2.png" alt="Background Concept 2">
+                    </div>
+                    <div class="art-card bg">
+                        <img src="BG3.png" alt="Background Concept 3">
+                    </div>
+                    <div class="art-card bg">
+                        <img src="BG4.png" alt="Background Concept 4">
+                    </div>
+                    <div class="art-card bg">
+                        <img src="BG5.png" alt="Background Concept 5">
+                    </div>
+                    <div class="art-card bg">
+                        <img src="BG6.png" alt="Background Concept 6">
+                    </div>
+                    <div class="art-card bg">
+                        <img src="BG7.png" alt="Background Concept 7">
+                    </div>
+                    <div class="art-card bg">
+                        <img src="BG8.png" alt="Background Concept 8">
+                    </div>
+
                     <div class="art-card character">
-                        <img src="char1.png" alt="Character Concept 1">
+                        <img src="char1-1.png" alt="Character Concept 1">
                     </div>
                     <div class="art-card character">
                         <img src="char2.png" alt="Character Concept 2">
@@ -292,6 +313,21 @@
                     </div>
                     <div class="art-card character">
                         <img src="char4.jpg" alt="Character Concept 4">
+                    </div>
+                    <div class="art-card character">
+                        <img src="char4.png" alt="Character Concept 4 PNG">
+                    </div>
+                    <div class="art-card character">
+                        <img src="char5.png" alt="Character Concept 5">
+                    </div>
+                    <div class="art-card character">
+                        <img src="char6.png" alt="Character Concept 6">
+                    </div>
+                    <div class="art-card character">
+                        <img src="char7.png" alt="Character Concept 7">
+                    </div>
+                    <div class="art-card character">
+                        <img src="char8.png" alt="Character Concept 8">
                     </div>
 
                 </div>
@@ -325,7 +361,6 @@
         // --- FILTER SCRIPT ---
         function filterSelection(c) {
             const x = document.getElementsByClassName("art-card");
-            if (c == "all") c = "";
             for (let i = 0; i < x.length; i++) {
                 x[i].style.display = "none";
                 if (x[i].className.indexOf(c) > -1) x[i].style.display = "block";
@@ -334,6 +369,11 @@
             for (let i = 0; i < btns.length; i++) { btns[i].classList.remove("active"); }
             event.currentTarget.classList.add("active");
         }
+
+        // Sets "Icons" as the default view on page load
+        document.addEventListener("DOMContentLoaded", () => {
+            filterSelection('icons');
+        });
 
         // --- LIGHTBOX MODAL SCRIPT ---
         const modal = document.getElementById("imageModal");
